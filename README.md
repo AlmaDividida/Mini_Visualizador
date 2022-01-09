@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Install dependences "npm install bootstrap jquery @popperjs/core"
+Install dependences `npm install bootstrap jquery @popperjs/core`
 Run `ng serve -o`  The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
