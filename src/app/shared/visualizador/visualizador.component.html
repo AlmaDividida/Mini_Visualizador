@@ -6,8 +6,14 @@
         <div class="card-body">
           <h5 class="card-title">Seleccione un archivo JSON para continuar...</h5>
           <p class="card-text">Dependiendo del archivo se cargaran las librerias correspondientes</p>
-          <div class="mb-3">
-            <input class="form-control" type="file" id="formFile">
+
+          <div class="row">
+            <div class="col-sm-8 pe-0">
+              <input class="form-control" type="file" id="formFile" accept="application/json" required (change)="onChange($event)">
+            </div>
+            <div class="col-sm-4 d-grid gap-2 ps-0">
+              <button class="btn btn-dark" (click)="onLoad()" [ngClass]="{'disabled':buttonDisabled}">Subir Archivo</button>
+            </div>
           </div>
 
           <app-canvas></app-canvas>
