@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ArchivoService } from 'src/app/archivo.service';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -12,6 +13,7 @@ export class CanvasComponent implements OnInit {
 
   @ViewChild('myCanvas')
   private canvasRef!: ElementRef;
+  private archivo!: [string, object];
 
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
@@ -19,7 +21,10 @@ export class CanvasComponent implements OnInit {
   constructor(private archivoService:ArchivoService) { }
 
   ngOnInit(): void {
-    //this.load( this.archivoService.getArchivoJson() ) FALTA IMPLEMENTAR OBSERVABLE
+    this.archivoService.getArchivoJson$().subscribe(archivo => {
+      this.archivo = archivo;
+      this.load( this.archivo )
+    });
   }
 
   /**
@@ -48,21 +53,21 @@ export class CanvasComponent implements OnInit {
    * loadThreeJS
    */
   public loadThreeJS( json: object ) {
-    
+    console.log("Se abrio correctamente el archivo ThreeJS")
   }
 
   /**
    * loadCanvasJs
    */
    public loadCanvasJs( json: object ) {
-    
+    console.log("Se abrio correctamente el archivo CanvasJS")
   }
 
   /**
    * loadChartJs
    */
    public loadChartJs( json: object ) {
-    
+    console.log("Se abrio correctamente el archivo ChartJS")
   }
 
 }
