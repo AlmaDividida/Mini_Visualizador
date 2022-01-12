@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ArchivoService } from 'src/app/archivo.service';
 
 @Component({
   selector: 'app-visualizador',
@@ -9,10 +10,9 @@ export class VisualizadorComponent implements OnInit {
 
   file: any | null = null;
   buttonDisabled: boolean = true;
-  jsonObj: any | null = null;
 
   // Inject service 
-  constructor(){}
+  constructor(private archivoService:ArchivoService){}
 
   ngOnInit(): void {
   }
@@ -35,9 +35,11 @@ export class VisualizadorComponent implements OnInit {
       fileReader.onload = function(fileLoadedEvent){
           var textFromFileLoaded:any = fileLoadedEvent.target?.result;
           var json = JSON.parse(textFromFileLoaded);
-          console.log(json)
+          localStorage.setItem('json', textFromFileLoaded);
       };
-
       fileReader.readAsText(fileToLoad, "UTF-8");
-    }
+      
+      this.archivoService.setArchivoJson( localStorage.getItem('json') );
+
+  }
 }
