@@ -8,6 +8,8 @@ import { VisualizadorComponent } from './shared/visualizador/visualizador.compon
 import { FooterComponent } from './shared/footer/footer.component';
 import { CanvasComponent } from './shared/canvas/canvas.component';
 
+import { NgChartsModule } from 'ng2-charts';//npm install ng2-charts --save 3.0.6
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,8 @@ import { CanvasComponent } from './shared/canvas/canvas.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

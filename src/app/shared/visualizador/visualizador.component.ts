@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Chart } from 'chart.js'; //importamos la libreria para usar ChartJS//BORRAR
+import datosChart from 'src/assets/json/chartjs.json';//importamos ek json para acceder a sus atributosBORRAR
 
 @Component({
   selector: 'app-visualizador',
@@ -11,6 +13,8 @@ export class VisualizadorComponent implements OnInit {
   buttonDisabled: boolean = true;
   jsonObj: any | null = null;
 
+  public chart: any;//guardara el obj chart.jsBORRAR
+  public Datos: any = datosChart;//se obtiene el json chartjs.jsonBORRAR
   // Inject service 
   constructor(){}
 
@@ -40,4 +44,41 @@ export class VisualizadorComponent implements OnInit {
 
       fileReader.readAsText(fileToLoad, "UTF-8");
     }
+  
+    chartJs(json?: any): void {
+      json = this.Datos;
+      console.log(json);
+      var xValues = json.data.labels;//["Italy", "France", "Spain", "USA", "Argentina"];
+      console.log(xValues);
+      var yValues = json.data.data;//[55, 49, 44, 24, 15];
+      console.log(yValues);
+      var barColors = json.data.backgroundColor;//["red", "green", "blue", "orange", "brown"];
+      console.log(barColors);
+      var tipo = json.type;
+      console.log(tipo);
+
+      this.chart = new Chart("myCanvas", {
+        type: tipo,
+        data: {
+          labels: xValues,
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        }
+      /*var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+      var yValues = [55, 49, 44, 24, 15];
+      var barColors = ["red", "green", "blue", "orange", "brown"];
+  
+      this.chart = new Chart("myCanvas", {
+        type: "bar",
+        data: {
+          labels: xValues,
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        }*/
+      });
+    }//BORRAR
 }
