@@ -3,6 +3,7 @@ import { ThreeJs } from 'src/app/models/three-js';
 import { ChartJs } from 'src/app/models/chart-js';
 import { CanvasJs } from 'src/app/models/canvas-js';
 import { ArchivoService } from 'src/app/services/archivo.service';
+import { InterfaceLibrary } from 'src/app/models/InterfaceLibrary';
 
 @Component({
   selector: 'app-canvas',
@@ -24,8 +25,22 @@ export class CanvasComponent implements OnInit {
    * load
    */
   public load( json: any ) {
-    const object = new ThreeJs();
-    object.draw(json.object, this.canvas);
+    var object:any;
+
+    switch (json.name) {
+      case "ThreeJs":
+          object = new ThreeJs();
+        break;
+      case "CanvasJs":
+          object = new CanvasJs();
+        break;
+      case "ChartJs":
+          object = new ChartJs();
+        break;
+      default:
+        break;
+    }
+    object.draw(json, this.canvas);
 
   }
 
