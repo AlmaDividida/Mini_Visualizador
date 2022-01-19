@@ -1,4 +1,5 @@
 {   
+    "name":"ChartJs",   
     "metadata": {
         "type": "chartjs",
         "version": 1.0

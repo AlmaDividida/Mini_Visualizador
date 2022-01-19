@@ -1,0 +1,28 @@
+{   
+    "name":"ChartJs",   
+    "metadata": {
+        "type": "chartjs",
+        "version": 1.0
+    },
+    "type": "pie",
+    "data": {
+        "labels": [
+            "Ventas",
+            "Donaciones",
+            "Trabajos",
+            "Publicidad"
+        ],
+        "backgroundColor": [
+            "rgba(163,221,203,0.2)",
+            "rgba(232,233,161,0.2)",
+            "rgba(230,181,102,0.2)",
+            "rgba(229,112,126,0.2)"
+        ],
+        "data": [
+            1500,
+            400,
+            2000,
+            7000
+        ]
+    }
+}
