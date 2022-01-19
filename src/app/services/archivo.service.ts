@@ -6,8 +6,9 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ArchivoService {
 
-  private archivoJson!: [string, object];
-  private archivoJson$: Subject<[string, object]>;
+  private archivoJson!: object;
+  private archivoJson$: Subject<object>;
+
   constructor() {
     this.archivoJson$ = new Subject();
   }
@@ -17,15 +18,15 @@ export class ArchivoService {
    */
   public setArchivoJson(value: any) {
     var json = JSON.parse(value);
-    this.archivoJson = json
-    this.archivoJson$.next(this.archivoJson)
-    //console.log(this.archivoJson)
+    this.archivoJson = json;
+    this.archivoJson$.next(this.archivoJson);
   }
 
   /**
    * getArchivoJson
    */
-  public getArchivoJson$(): Observable<[string, object]> {
+  public getArchivoJson$(): Observable<object> {
     return this.archivoJson$.asObservable();
   }
+  
 }

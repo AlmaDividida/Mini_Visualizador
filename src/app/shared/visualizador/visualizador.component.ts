@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ArchivoService } from 'src/app/archivo.service';
+import { ArchivoService } from 'src/app/services/archivo.service';
 
 @Component({
   selector: 'app-visualizador',
