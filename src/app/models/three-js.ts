@@ -38,5 +38,5 @@ export class ThreeJs implements InterfaceLibrary {
         }
         animate()
     }
-
+    
 }
