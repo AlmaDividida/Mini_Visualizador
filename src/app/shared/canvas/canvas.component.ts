@@ -4,6 +4,7 @@ import { ChartJs } from 'src/app/models/chart-js';
 import { CanvasJs } from 'src/app/models/canvas-js';
 import { ArchivoService } from 'src/app/services/archivo.service';
 import { InterfaceLibrary } from 'src/app/models/InterfaceLibrary';
+import { Voronoi } from 'src/app/models/Voronoi';
 
 @Component({
   selector: 'app-canvas',
@@ -38,6 +39,9 @@ export class CanvasComponent implements OnInit {
       case "ChartJs":
           object = new ChartJs();
         break;
+      case "Voronoi":
+        object = new Voronoi();
+      break;
       default:
         break;
     }
