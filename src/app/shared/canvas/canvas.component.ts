@@ -1,11 +1,9 @@
-import { Component, OnInit, AfterViewInit, ElementRef, Input, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ArchivoService } from 'src/app/archivo.service';
-//import * as THREE from 'three';
-//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
-import { Chart } from 'chart.js'; //importamos la libreria para usar ChartJS npm install chart.js --save 3.7.0
-//import datosChart from 'src/assets/json/chartjs.json';//importamos ek json para acceder a sus atributos
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ThreeJs } from 'src/app/models/three-js';
+import { ChartJs } from 'src/app/models/chart-js';
+import { CanvasJs } from 'src/app/models/canvas-js';
+import { ArchivoService } from 'src/app/services/archivo.service';
+import { InterfaceLibrary } from 'src/app/models/InterfaceLibrary';
 
 @Component({
   selector: 'app-canvas',
@@ -14,81 +12,43 @@ import { Chart } from 'chart.js'; //importamos la libreria para usar ChartJS npm
 })
 export class CanvasComponent implements OnInit {
 
-  public chart: any;//guardara el obj chart.js
-  //public Datos: any = datosChart;//se obtiene el json chartjs.json
-
   @ViewChild('myCanvas')
   private canvasRef!: ElementRef;
-  private archivo!: object;//[string, object];
+  private archivo!: object;
+
 
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
   constructor(private archivoService:ArchivoService) { }
 
-  ngOnInit(): void {
-    this.archivoService.getArchivoJson$().subscribe(archivo => {
-      this.archivo = archivo;
-      this.load( this.archivo )
-    });
-  }
-
   /**
    * load
    */
-  public load( file:any ) {
-    switch (file.name) {
+  public load( json: any ) {
+    var object:any;
+
+    switch (json.name) {
       case "ThreeJs":
-          this.loadThreeJS(file);
+          object = new ThreeJs();
         break;
       case "CanvasJs":
-          this.loadCanvasJs(file);
+          object = new CanvasJs();
         break;
       case "ChartJs":
-          this.loadChartJs(file);
+          object = new ChartJs();
         break;
       default:
-          console.log("ERROR NO SE ENCUENTRAN LAS LIBRERIAS DE ESE ARCHIVO")
         break;
     }
+    object.draw(json, this.canvas);
 
   }
 
-  /**
-   * loadThreeJS
-   */
-  public loadThreeJS( json: object ) {
-    console.log("Se abrio correctamente el archivo ThreeJS")
-  }
-
-  /**
-   * loadCanvasJs
-   */
-   public loadCanvasJs( json: object ) {
-    console.log("Se abrio correctamente el archivo CanvasJS")
-  }
-
-  /**
-   * loadChartJs
-   */
-   public loadChartJs( json: any ) {
-    console.log("Se abrio correctamente el archivo ChartJS");
-    console.log(json);
-    var xValues = json.data.labels;//["Italy", "France", "Spain", "USA", "Argentina"];
-    console.log(xValues);
-    var yValues = json.data.data;//[55, 49, 44, 24, 15];
-    var barColors = json.data.backgroundColor;//["red", "green", "blue", "orange", "brown"];
-    var tipo = json.type;
-
-    this.chart = new Chart("myCanvas", {
-      type: tipo,
-      data: {
-        labels: xValues,
-        datasets: [{
-          backgroundColor: barColors,
-          data: yValues
-        }]
-      }
+  ngOnInit(): void {
+    this.archivoService.getArchivoJson$().subscribe(archivo => {
+      this.archivo = archivo;
+      this.load( this.archivo );
     });
   }
 
