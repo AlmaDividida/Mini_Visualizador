@@ -54,6 +54,12 @@ export class CanvasComponent implements OnInit {
       case "RedPorosa":
         object = new RedPorosa();
         break;
+      case "Voronoi":
+        object = new RedPorosa();
+        break;
+      case "Particulas":
+        object = new RedPorosa();
+        break;
       default:
         break;
     }
