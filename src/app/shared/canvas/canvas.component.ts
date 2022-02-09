@@ -3,8 +3,9 @@ import { ThreeJs } from 'src/app/models/three-js';
 import { ChartJs } from 'src/app/models/chart-js';
 import { CanvasJs } from 'src/app/models/canvas-js';
 import { ArchivoService } from 'src/app/services/archivo.service';
-import { InterfaceLibrary } from 'src/app/models/InterfaceLibrary';
 import { Voronoi } from 'src/app/models/Voronoi';
+import { Particulas } from 'src/app/models/Particulas';
+import { RedPorosa } from 'src/app/models/RedPorosa';
 
 @Component({
   selector: 'app-canvas',
@@ -27,24 +28,8 @@ export class CanvasComponent implements OnInit {
    * load
    */
   public load( json: any ) {
-    var object:any;
-
-    switch (json.name) {
-      case "ThreeJs":
-          object = new ThreeJs();
-        break;
-      case "CanvasJs":
-          object = new CanvasJs();
-        break;
-      case "ChartJs":
-          object = new ChartJs();
-        break;
-      case "Voronoi":
-        object = new Voronoi();
-      break;
-      default:
-        break;
-    }
+    
+    const object = this.getConstructor(json.name);
     object.draw(json, this.canvas);
 
   }
@@ -54,6 +39,35 @@ export class CanvasComponent implements OnInit {
       this.archivo = archivo;
       this.load( this.archivo );
     });
+    console.log(this.archivo);
+  }
+
+  getConstructor(name: string) {
+    var object: any;
+
+    switch (name) {
+      case "ThreeJs":
+        object = new ThreeJs();
+        break;
+      case "CanvasJs":
+        object = new CanvasJs();
+        break;
+      case "ChartJs":
+        object = new ChartJs();
+        break;
+      case "Voronoi":
+        object = new Voronoi();
+        break;
+      case "Particulas":
+        object = new Particulas();
+        break;
+      case "RedPorosa":
+        object = new RedPorosa();
+        break;
+      default:
+        break;
+    }
+    return object;
   }
 
 }

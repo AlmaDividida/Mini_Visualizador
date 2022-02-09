@@ -17,8 +17,8 @@ export class ArchivoService {
    * setArchivoJson
    */
   public setArchivoJson(value: any) {
-    var json = JSON.parse(value);
-    this.archivoJson = json;
+    //var json = JSON.parse(value);
+    this.archivoJson = value;
     this.archivoJson$.next(this.archivoJson);
   }
 
