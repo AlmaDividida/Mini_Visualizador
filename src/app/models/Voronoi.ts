@@ -1,16 +1,12 @@
 import { InterfaceLibrary } from "./InterfaceLibrary";
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-//import { Geometry } from 'three/examples/jsm/deprecated/Geometry';
 
 export class Voronoi implements InterfaceLibrary{
 
-    //puntosred:any = [];
     colors = {};
-    //mySelf = this;
+
     draw(json: any, c: any): void {
-        console.log("Se abrio correctamente el archivo Voronoi");
-        console.log(json);
 
         var puntosred = [];
 
@@ -19,7 +15,6 @@ export class Voronoi implements InterfaceLibrary{
            se crean en conjunto de cada color y se agregan a escena**/
         const scene = new THREE.Scene();
         scene.background = new THREE.Color( 0xffffff );
-        //const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const camera = new THREE.PerspectiveCamera(55, 1, 1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: c });
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -34,6 +29,7 @@ export class Voronoi implements InterfaceLibrary{
         var cs: any = [];
         var mx = -10000, my = -10000, mz = -10000;
         puntos.forEach(function (punto: any) {
+            var points = [];
             var px = parseInt(punto.x);
             var py = parseInt(punto.y);
             var pz = parseInt(punto.z);
@@ -48,18 +44,18 @@ export class Voronoi implements InterfaceLibrary{
             point.x = px;
             point.y = py;
             point.z = pz;
-            //point.normalize();
-            //const vertices = new Float32Array([point.x, point.y, point.z]);
+            points.push(point);//###########
             if (px > mx) mx = px;
             if (py > my) my = py;
             if (pz > mz) mz = pz;
+
+            //scene.add(colores['' + punto.sb]);
             const vertices = new Float32Array([point.x, point.y, point.z]);
             colores['' + punto.sb].setAttribute('position', new THREE.BufferAttribute(vertices,3));
-            
-            /*const material = new THREE.MeshNormalMaterial();
+            colores['' + punto.sb].setFromPoints(points);
             colores['' + punto.sb].computeVertexNormals();
-            const mesh = new THREE.Mesh(colores['' + punto.sb], material);
-            scene.add(mesh);*/
+            const mesh = new THREE.Points(colores['' + punto.sb], new THREE.MeshNormalMaterial());
+            scene.add(mesh);
         });
 
         cs.forEach(function (color: any) {
