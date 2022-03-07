@@ -2,7 +2,9 @@ import { InterfaceLibrary } from "./InterfaceLibrary";
 import Chart from 'chart.js/auto' 
 
 export class ChartJs implements InterfaceLibrary{
+    menu: string = "";
     private chart: any;
+    
     draw( json: any, c: any ): void {
         console.log("Se abrio correctamente el archivo ChartJS");
         console.log(json);

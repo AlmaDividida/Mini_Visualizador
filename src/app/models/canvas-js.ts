@@ -2,7 +2,7 @@ import { InterfaceLibrary } from "./InterfaceLibrary";
 //import CanvasJS from 'canvasjs' 
 
 export class CanvasJs implements InterfaceLibrary{
-
+    menu: string = "";
     draw( json: any, c: any ): void {
       /*
         var theme = json.theme;

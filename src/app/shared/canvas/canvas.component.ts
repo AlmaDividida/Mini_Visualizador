@@ -4,6 +4,8 @@ import { ChartJs } from 'src/app/models/chart-js';
 import { CanvasJs } from 'src/app/models/canvas-js';
 import { ArchivoService } from 'src/app/services/archivo.service';
 import { RedPorosa } from 'src/app/models/red-porosa';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Voronoi } from 'src/app/models/voronoi';
 
 @Component({
   selector: 'app-canvas',
@@ -11,6 +13,8 @@ import { RedPorosa } from 'src/app/models/red-porosa';
   styleUrls: ['./canvas.component.css']
 })
 export class CanvasComponent implements OnInit {
+  showMenu = false;
+  menu!: SafeHtml;
 
   @ViewChild('myCanvas')
   private canvasRef!: ElementRef;
@@ -19,7 +23,7 @@ export class CanvasComponent implements OnInit {
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
-  constructor(private archivoService:ArchivoService) { }
+  constructor(private archivoService:ArchivoService, private sanitizer: DomSanitizer) { }
 
   /**
    * load
@@ -28,7 +32,8 @@ export class CanvasComponent implements OnInit {
     
     const object = this.getConstructor(json.name);
     object.draw(json, this.canvas);
-
+    this.menu = this.sanitizer.bypassSecurityTrustHtml(object.menu);
+    this.showMenu = true
   }
 
   ngOnInit(): void {
@@ -55,7 +60,7 @@ export class CanvasComponent implements OnInit {
         object = new RedPorosa();
         break;
       case "Voronoi":
-        object = new RedPorosa();
+        object = new Voronoi();
         break;
       case "Particulas":
         object = new RedPorosa();

@@ -9,6 +9,7 @@ import { ArchivoService } from 'src/app/services/archivo.service';
 export class VisualizadorComponent implements OnInit {
 
   file: any | null = null;
+  json: any;
   buttonDisabled: boolean = true;
 
   // Inject service 
@@ -27,23 +28,24 @@ export class VisualizadorComponent implements OnInit {
     } else {
       this.buttonDisabled = true;
     }
-    this.saveStorage();
+    this.saveStorage(this);
   }
   
   // OnClick del boton "Subir Archivo" 
   onLoad(): void {
-      this.archivoService.setArchivoJson( localStorage.getItem('json') );
+    console.log(this.json);
+      this.archivoService.setArchivoJson( this.json );
 
   }
 
   // Guarda el json en el Local Storage
-  saveStorage(): void {
+  saveStorage(callback: any): void {
     var fileToLoad = this.file;
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent){
         var textFromFileLoaded:any = fileLoadedEvent.target?.result;
         var json = JSON.parse(textFromFileLoaded);
-        localStorage.setItem('json', textFromFileLoaded);
+        callback.json = json;
     };
     fileReader.readAsText(fileToLoad, "UTF-8");
   }
