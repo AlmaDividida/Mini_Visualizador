@@ -6,6 +6,7 @@ import { ArchivoService } from 'src/app/services/archivo.service';
 import { Voronoi } from 'src/app/models/Voronoi';
 import { Particulas } from 'src/app/models/Particulas';
 import { RedPorosa } from 'src/app/models/RedPorosa';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-canvas',
@@ -13,6 +14,8 @@ import { RedPorosa } from 'src/app/models/RedPorosa';
   styleUrls: ['./canvas.component.css']
 })
 export class CanvasComponent implements OnInit {
+  showMenu = false;
+  menu!: SafeHtml;
 
   @ViewChild('myCanvas')
   private canvasRef!: ElementRef;
@@ -22,7 +25,7 @@ export class CanvasComponent implements OnInit {
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
   }
-  constructor(private archivoService:ArchivoService) { }
+  constructor(private archivoService:ArchivoService, private sanitizer: DomSanitizer) { }
 
   /**
    * load
@@ -31,6 +34,8 @@ export class CanvasComponent implements OnInit {
     
     const object = this.getConstructor(json.name);
     object.draw(json, this.canvas);
+    this.menu = this.sanitizer.bypassSecurityTrustHtml(object.menu);
+    this.showMenu = true;
 
   }
 

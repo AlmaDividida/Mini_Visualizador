@@ -1,8 +1,10 @@
 import { InterfaceLibrary } from "./InterfaceLibrary";
 import Chart from 'chart.js/auto'
 import * as THREE from 'three';
+//import * as $ from 'jquery';
 
 declare var Parser:any;
+declare var $:any;
 
 export class Particulas implements InterfaceLibrary{
     
@@ -24,6 +26,71 @@ export class Particulas implements InterfaceLibrary{
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
+    menu: string =  "<div id='particulasMenuVisualizadorParticulas'"+ "class='particulasMenu' >" +
+                        "<div class='form-check'>" +
+                            "<button  type='button' class='btn btn-success btn-sm' id='regresarVisualizadorParticulas'" + ">" + "<<" + "</button>"+
+                            "<button  type='button' class='btn btn-success btn-sm' id = 'pausaVisualizadorParticulas'"+">" + "||" + "</button>"+
+                            "<button  type='button' class='btn btn-success btn-sm'  id='avanzarVisualizadorParticulas'"+">" + ">>" + "</button>"+
+                            "<p>Paso: <output id='posVisualizadorParticulas'"+"></output></p>" +
+                            "<div class='form-check'>" +
+                                "<input type='checkbox' class='form-check-input' id='Checkpt1VisualizadorParticulas'"+">" +
+                                "<label class='form-check-label' for='exampleCheck1'>Ver Trayectorias</label>" +
+                            "</div>" +
+                        "</div>" +
+                                    
+                        "<div class='aisla-particula' id='aislaParticulaVisualizadorParticulas'"+">"+
+                            "<label class='fw-bolder'>Aislar Particula</label>" +
+                            "<input type='number' min='0' max='4' size='5' id='particula' placeholder='Elija particula' style='width:120px'><br>" +
+                            /*"<select class='form-select' aria-label='Default select example'>" +
+                                "<option selected>Selecciona particula</option>" +
+                                "<option value='0'>0</option>" +
+                                "<option value='1'>1</option>" +
+                                "<option value='2'>2</option>" +
+                                "<option value='3'>3</option>" +
+                                "<option value='4'>4</option>" +
+                            "</select>" +*/
+                            "<button class='btn btn-outline-primary btn-sm' type='button' id='aceptar'>Aceptar</button><br><br>" +
+                        "</div>" +
+
+                        "<div class='result'>"+ 
+                            "<label class='text-center fw-bolder'>TIEMPOS</label><br>" +
+                            "<label>Tau Time:</label>"+
+                            "<input type='text' id='Tau' name='fname' readonly size='5' value='"+"Tau"+"'><br><br>"+
+                            "<label>Direct Time:</label> "+
+                            "<input type='text' id='direcTime' readonly size='5' value='"+"Direct"+"'><br><br>"+
+                            "<label>Looping Time: </label>"+  
+                            "<input type='text' id='LoopingTime' readonly size='5' value='"+"Loop"+"'><br><br>"+
+                            "<div class='btn-grafica'>" +
+                                "<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#exampleModalCenter' id='btngraficaVisualizadorParticulas'>Generar grafica</button>" 
+                            + "</div>"+
+                        "</div>"+
+                    "</div>";
+                    /*'<div class="btn-group" role="group" aria-label="Basic mixed styles example">'+
+                        '<button type="button" class="btn btn-success">' + '<<' + '</button>' +
+                        '<button type="button" class="btn btn-success">' + '||' + '</button>' +
+                        '<button type="button" class="btn btn-success">' + '>>' + '</button>' +
+                    '</div>'+
+                    '<p>Paso: <output id="posVisualizadorParticulas" ' + '></output></p>' +
+                    '<div class="form-check mt-4">' +
+                        '<input type="checkbox" class="form-check-input" id="Checkpt1VisualizadorParticulas"' + '>' +
+                        '<label class="form-check-label" for="exampleCheck1">Ver Trayectorias</label>' +
+                    '</div>' +
+                    '<div class="form-check mt-4">' +
+                        '<input class="form-check-input" type="checkbox" value="" id="grises-check">' +
+                        '<label class="form-check-label" for="grises-check">' +
+                            'Grises' +
+                        '</label>' +
+                    '</div>' +
+                    '<div class="form-check mt-4">' +
+                        '<input class="form-check-input" type="checkbox" value="" id="auto-rotar-check">' +
+                        '<label class="form-check-label" for="auto-rotar-check">' +
+                            'Auto rotar' +
+                        '</label>' +
+                    '</div>' +
+                    '<div class="form-check mt-4">' +
+                        '<button type="submit" class="btn btn-primary btn-large">Aplicar</button>' +
+                    '</div>';*/
+
     draw(json: any, c: any): void {
 
         var points: any = [];
@@ -37,7 +104,7 @@ export class Particulas implements InterfaceLibrary{
          * -> Las paredes del lugar de la visualizacion
          */
         function dibujaCanal() {
-            objParticulas.camera.position.set(0, 0, 0.75);
+            objParticulas.camera.position.set(0, 0, 0.95);
             objParticulas.play = true; //Si la escena se ha creado correctamente podemos comenzar la animacion
             objParticulas.funciones = json.canal;
             var barizq = objParticulas.funciones.LBarrier.value;//Estos valores se obtienen de particulas.json
@@ -318,7 +385,6 @@ export class Particulas implements InterfaceLibrary{
                         var x = this.trays[i][j].x;
                         var y = this.trays[i][j].y;
                         //geometry.vertices.push(new THREE.Vector3(x, y, 0));
-
                     }
                     var tray = new THREE.Line(geometry, material);
                     this.scene.add(tray);
