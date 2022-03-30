@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ArchivoService } from 'src/app/services/archivo.service';
 
-
 @Component({
   selector: 'app-visualizador',
   templateUrl: './visualizador.component.html',
@@ -29,16 +28,12 @@ export class VisualizadorComponent implements OnInit {
     } else {
       this.buttonDisabled = true;
     }
-    //this.saveStorage();
     this.saveStorage(this);
   }
   
   // OnClick del boton "Subir Archivo" 
   onLoad(): void {
-      console.log(this.json);
       this.archivoService.setArchivoJson( this.json );
-      //this.archivoService.setArchivoJson( localStorage.getItem('json') );
-
   }
 
   // Guarda el json en el Local Storage
@@ -52,15 +47,5 @@ export class VisualizadorComponent implements OnInit {
     };
     fileReader.readAsText(fileToLoad, "UTF-8");
   }
-  /*saveStorage(): void {
-    var fileToLoad = this.file;
-    var fileReader = new FileReader();
-    fileReader.onload = function(fileLoadedEvent){
-        var textFromFileLoaded:any = fileLoadedEvent.target?.result;
-        var json = JSON.parse(textFromFileLoaded);
-        localStorage.setItem('json', textFromFileLoaded);
-    };
-    fileReader.readAsText(fileToLoad, "UTF-8");
-  }*/
 
 }

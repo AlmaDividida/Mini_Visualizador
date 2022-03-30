@@ -14,13 +14,10 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./canvas.component.css']
 })
 export class CanvasComponent implements OnInit {
-  showMenu = false;
-  menu!: SafeHtml;
 
   @ViewChild('myCanvas')
   private canvasRef!: ElementRef;
   private archivo!: object;
-
 
   private get canvas(): HTMLCanvasElement {
     return this.canvasRef.nativeElement;
@@ -31,12 +28,8 @@ export class CanvasComponent implements OnInit {
    * load
    */
   public load( json: any ) {
-    
-    const object = this.getConstructor(json.name);
+    const object = this.getConstructor(json);
     object.draw(json, this.canvas);
-    this.menu = this.sanitizer.bypassSecurityTrustHtml(object.menu);
-    this.showMenu = true;
-
   }
 
   ngOnInit(): void {
@@ -44,13 +37,12 @@ export class CanvasComponent implements OnInit {
       this.archivo = archivo;
       this.load( this.archivo );
     });
-    console.log(this.archivo);
   }
 
-  getConstructor(name: string) {
+  getConstructor(json: any) {
     var object: any;
 
-    switch (name) {
+    switch (json.name) {
       case "ThreeJs":
         object = new ThreeJs();
         break;
@@ -61,10 +53,10 @@ export class CanvasComponent implements OnInit {
         object = new ChartJs();
         break;
       case "Voronoi":
-        object = new Voronoi();
+        object = new Voronoi(json,this.canvas);
         break;
       case "Particulas":
-        object = new Particulas();
+        object = new Particulas(json,this.canvas);
         break;
       case "RedPorosa":
         object = new RedPorosa();
