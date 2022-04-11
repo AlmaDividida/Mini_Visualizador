@@ -26,6 +26,9 @@ export class Particulas implements InterfaceLibrary{
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
+    //variable que sera usada para identificar el menu principal e indivudual
+    dateId = new Date();
+    idVisualizador = this.dateId.getTime();
     
     draw(json: any, c: any): void {
 
@@ -203,11 +206,8 @@ export class Particulas implements InterfaceLibrary{
             objParticulas.animate(objParticulas.scene, objParticulas);
         }//FIN dibujaParticulas();
         dibujaParticulas();
-        if(objParticulas.aislar == false){
-            this.mostrarMenu();
-        }else{
-            this.mostrarMenu();
-        }
+        /*var nuevoId = new Date();
+        this.mostrarMenu(nuevoId.getTime());*/
     }//FIN draw(json,canvas);
     
     /** Funcion animate **/
@@ -232,7 +232,8 @@ export class Particulas implements InterfaceLibrary{
     setPos(aislar = false, objParticulas:any): void {
         //Si la particula NO es aislada
         if (aislar == false) {
-            var checkID = "Checkpt1visualizador1";
+            var checkID = "Checkpt1"+this.idVisualizador;
+
             //Recorremos el arreglo de cada una de las particulas
             for (var i = 0; i < objParticulas.particulas.length; i++) {
                 if (objParticulas.paso < objParticulas.particulas[i].pasos.length) {
@@ -246,12 +247,12 @@ export class Particulas implements InterfaceLibrary{
                     objParticulas.trays[i].push({ "x": x, "y": y });
                 }
             }
-            //var checkID = "Checkpt1VisualizadorParticulas";
-            var checkID = "Checkpt1visualizador1";
+            var checkID = "Checkpt1"+this.idVisualizador;
             var checkbox = document.getElementById(checkID);
             //Si Trayectoria esta marcado, se mostraran las traqyectorias de las particulas
             if (checkbox) {
-                objParticulas.muestraTray(checkbox);
+                //objParticulas.muestraTray(checkbox);
+                objParticulas.muestraTray(checkbox, aislar);
             }
         } else {//La particula es aislada, repetimos el procedimiento anterior pero solo para una particula
             if (objParticulas.paso < objParticulas.particulas.pasos.length) {
@@ -261,10 +262,10 @@ export class Particulas implements InterfaceLibrary{
                 objParticulas.pars[0].position.setY(y);
                 objParticulas.trays[0].push({ "x": x, "y": y });
             }
-            var checkID = "Checkpt1visualizador1";
+            var checkID = "Checkpt1"+this.idVisualizador;
             var checkbox = document.getElementById(checkID);
             if (checkbox) {
-                objParticulas.muestraTray(checkbox);
+                objParticulas.muestraTray(checkbox,aislar);
             }
         }
     }//FIN setPos(aislar,objParticulas)
@@ -274,14 +275,17 @@ export class Particulas implements InterfaceLibrary{
     * particulas, funciona para particula aislada y para todo el arreglo
     * de particulas
     */
-    muestraTray(checkbox:any): void {
+    muestraTray(checkbox:any, aislar:any): void {
         this.trayso = [];
         var vertices = [];//Puntos que seran unidos para generar la linea de la trayectoria
         let xP = 1000;//Punto en el que la particula cambiara de color su trayectoria
-
+        
         if (checkbox.checked == true) {//Posiciones de cada particula
+            //console.log("Entre al IF de muestraTray: "+aislar)
             for (var i = 0; i < this.trays.length; i++) {
-                if (this.trays.length == 1) {//Si la particula esta aislada
+                
+                if(aislar == true && this.trays.length == 1) {
+                    //console.log("Entre al segundo IF de muestraTrayIndividual: "+aislar)
                     var geometry = new THREE.BufferGeometry();
                     var colorLinea = [];
                     for (var j = 0; j < this.trays[i].length; j++) {
@@ -326,45 +330,77 @@ export class Particulas implements InterfaceLibrary{
         }
     }//FIN muestraTray*/
     
-    mostrarMenu():void {
+    //Metodos para interactuar con el menu
+    pause(){
+        if (this.play == true) {
+            this.play = false;
+        } else {
+            this.play = true;
+        }
+    }
+
+    //regresa 5 pasos
+    regresar(){
+        this.play = false;
+        this.paso -= 5;
+        this.setPos(this.aislar, this.mySelf);
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    //avanza 5 pasos
+    avanzar(){
+        this.play = false;
+        this.paso += 5;
+        this.setPos(this.aislar, this.mySelf);
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    mostrarMenu(nuevoId:any, stringCanvas='myCanvas'):void {
         var objParticulas = this.json;
         var mySelf = this;
-        var contenedor= "<div class='row' id='visualizador1'"+">"+
-                            "<div class='container col-sm-10' id='visualizador1'"+"></div> " +
-                            "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menuvisualizador1'"+"></div>" +
+        mySelf.idVisualizador = nuevoId;
+        var contenedor= "<div class='row' id='visualizador" + mySelf.idVisualizador + "'>"+
+                            "<div class='container col-sm-10' id='"+ mySelf.idVisualizador + "'></div> " +
+                            "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu"+ mySelf.idVisualizador + "'></div>" +
                         "</div>";
 
         var Tau= this.json.tiempos[0].valor.toFixed(2);
         var Loop= this.json.tiempos[1].valor.toFixed(2);
         var Direct= this.json.tiempos[2].valor.toFixed(2);
 
-        $('#myCanvas').after(contenedor);
-
+        if(stringCanvas == 'myCanvas'){//Se coloca para el menuPrincipal
+            //$('.div-canvas').append(contenedor);
+            $('#myCanvas').after(contenedor);
+        }else{//si se aislo una particula
+            //$('.'+stringCanvas).append(contenedor);
+            $('.'+stringCanvas).after(contenedor);
+        }
+        
         var item = 
-            "<div id = 'particulasMenuvisualizador1'"+ "class='particulasMenu' >" +
-                "<h3 class='align-text-top' id='titulo'><span>Menu Particulas</span></h3>"+
+            "<div id = 'particulasMenu"+mySelf.idVisualizador + "' class='particulasMenuPrincipal' >" +
+                "<h3 class='align-text-top' id='tituloPrincipal'><span>Menu Particulas</span></h3>"+
                 "<ul class='nav flex-column'>" +
                     "<li class='nav-item'>" +
                         "<div class='form-check'>" +
-                            "<button  type='button' class='btn  btn-success button-espacio ' id='regresarvisualizador1'" + ">   <<    </button>"+
-                            "<button  type='button' class='btn btn-success button-espacio ' id = 'pausavisualizador1'"+" (click)='pausaClick()'>   ||   </button>"+
-                            "<button  type='button' class='btn btn-success button-espacio'  id='avanzarvisualizador1'"+">   >>    </button>"+
+                            "<button  type='button' class='btn  btn-success button-espacio' id='regresar" +mySelf.idVisualizador+ "'> << </button>"+
+                            "<button  type='button' class='btn btn-success button-espacio' id='pausa" +mySelf.idVisualizador+ "'> || </button>"+
+                            "<button  type='button' class='btn btn-success button-espacio' id='avanzar" +mySelf.idVisualizador+ "'> >> </button>"+
                             "<div class='form-check'>" +
-                                "<input type='checkbox' class='form-check-input' id='Checkpt1visualizador1'"+">" +
+                                "<input type='checkbox' class='form-check-input' id='Checkpt1"+mySelf.idVisualizador+"'>" +
                                 "<label class='form-check-label' for='exampleCheck1'> Ver Trayectorias</label>" +
                             "</div>" +
                         "</div>" +
                     "</li>" +
 
                     "<li class='nav-item'>" +
-                        "<div class='aisla-particula' id='aislaParticulavisualizador1'"+">"+
+                        "<div class='aisla-particula' id='aislaParticula" +mySelf.idVisualizador+ "'>"+
                             "<lable> <b>Aislar Particula</b></label>" +
                             "<input type='number' min='0' max='4'  size='4' id='particula' placeholder='Elija particula'>" +
                             "<button class = 'btn-success' type='submit' id='aceptar'>Aceptar</button>" +
                         "</div>" +
                     "</li>" +
         
-                    "<li class='nav-item'  id='Resultadovisualizador1'>" +
+                    "<li class='nav-item'  id='Resultado" +mySelf.idVisualizador+ "'>" +
                         "<div class='result'>"+ 
                             "<h4>Tiempos</h4>"+
                             "<label >Tau Time:</label>"+
@@ -374,64 +410,35 @@ export class Particulas implements InterfaceLibrary{
                             "<label >Looping Time: </label>"+  
                             "<input type='text' id='LoopingTime'  readonly size='5' value='"+Loop+"'><br>"+
                             "<div class='btn-grafica'>" +
-                                "<button  type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModalCenter' id='btngraficavisualizador1'> Generar grafica </button>" 
+                                "<button  type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModalCenter' id='btngrafica" +mySelf.idVisualizador+ "'> Generar grafica </button>" 
                             + "</div>"+
                         "</div>"+
                     "</li>" +
                 "</ul>" + 
             "</div>";
         //boton            
-        $("#menuvisualizador1").append(item);
-        $("#menuvisualizador1").css({ "visibility": "visible", "height": "600px", "width": "250" })
+        $("#menu" + mySelf.idVisualizador).append(item);
+        $("#menu" + mySelf.idVisualizador).css({ "visibility": "visible", "height": "600px", "width": "250" })
         /************************************************************************************************ */
-        var check = document.getElementById('Checkpt1visualizador1');
-        function pause(){
-            console.log('click de pause '+mySelf.play);
-            if (mySelf.play == true) {
-                mySelf.play = false;
-                console.log('Entre al if '+mySelf.play);
-            } else {
-                mySelf.play = true;
-                console.log('Entre al else '+mySelf.play);
-            }
-        }
-    
-        //regresa 5 pasos
-        function regresar(){
-            mySelf.play = false;
-            mySelf.paso -= 5;
-            mySelf.setPos(mySelf.aislar, mySelf);
-            mySelf.renderer.render(mySelf.scene, mySelf.camera);
-            console.log("regrese 5 pasos")
-        }
-    
-        //avanza 5 pasos
-        function avanzar(){
-            mySelf.play = false;
-            mySelf.paso += 5;
-            mySelf.setPos(mySelf.aislar, mySelf);
-            mySelf.renderer.render(mySelf.scene, mySelf.camera);
-            console.log("avance 5 pasos")
-        }
+        var check = document.getElementById('Checkpt1'+ mySelf.idVisualizador);
+        
         //EvenListeners: Se usa Jquery para capturar los eventos
         $('document').ready(
-
-            $('#pausavisualizador1').click(function () {
-                pause();
-                console.log(objParticulas.aislar+ "aislado");
+            $('#pausa' + mySelf.idVisualizador).click(function(){
+                mySelf.pause();
             }),
 
-            $('#regresarvisualizador1').click(function () {
-                regresar();
+            $('#regresar' + mySelf.idVisualizador).click(function () {
+                mySelf.regresar();
             }),
 
-            $('#avanzarvisualizador1').click(function () {
-                avanzar();
+            $('#avanzar' + mySelf.idVisualizador).click(function () {
+                mySelf.avanzar();
             }),
             //Si el checkbox esta marcado muestra las trayectorias
-            $('#Checkpt1visualizador1').change(function(){
+            $('#Checkpt1'+mySelf.idVisualizador).change(function(){
                 if($(objParticulas).is(":checked")){
-                    mySelf.muestraTray(check);
+                    mySelf.muestraTray(check,mySelf.aislar);
                 }
             }),       
       
@@ -447,7 +454,7 @@ export class Particulas implements InterfaceLibrary{
                 }
             }),
             //Envento click para el boton que genera la grafica
-            $('#btngraficavisualizador1').click(function(){
+            $('#btngrafica' + mySelf.idVisualizador).click(function(){
                 //Variable que guarda la estructura del modal encargado de mostrar la grafica de la particula
                 var modal = "<div class='modal fade ' id='exampleModalCenter' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>" +
                                 "<div class='modal-dialog modal-lg' role='document'>"+
@@ -469,13 +476,13 @@ export class Particulas implements InterfaceLibrary{
                                                 "<!-- Tab panes -->"+
                                                 "<div class='tab-content'>"+
                                                     "<div class='tab-pane active' id='chart-1'>"+
-                                                        "<div id='myChart1Visualizador1' style='height: 300px; width: 100%;'></div>"+
+                                                        "<div id='myChart1"+mySelf.idVisualizador+"' style='height: 300px; width: 100%;'></div>"+
                                                     "</div>"+
                                                     "<div class='tab-pane' id='chart-2'>"+
-                                                        "<div id='myChart2Visualizador1' style=' height: 300px; width: 100%;'></div>"+
+                                                        "<div id='myChart2"+mySelf.idVisualizador+"' style=' height: 300px; width: 100%;'></div>"+
                                                     "</div>"+
                                                     "<div class='tab-pane' id='chart-3'>"+
-                                                        "<div id='myChart3Visualizador1' style=' height: 300px; width: 100%;'></div>"+
+                                                        "<div id='myChart3"+mySelf.idVisualizador+"' style=' height: 300px; width: 100%;'></div>"+
                                                     "</div>"+
                                                 "</div>"+
                                             "</div>"+
@@ -494,6 +501,7 @@ export class Particulas implements InterfaceLibrary{
      * la particula se aisla
      */
     aislaParticula(particula:any):any{
+        var mySelf = this;
         //Si la particula no existe en el arreglo
         if( particula >= this.particulas.length ){
             //Mensaje de error
@@ -519,6 +527,8 @@ export class Particulas implements InterfaceLibrary{
         //Creamos las variebles para el nuevo canvas
         var canvas2:any = document.createElement('canvas');
         canvas2.id = "canvas"+particula;
+        canvas2.class = "bg-light border";
+        canvas2.style = "width: 100vh";
         //Se crea el objeto en es te caso de tipo Particula
         var object:any = new Particulas(this.json, canvas2);
         //Se indica que la particula sera aislada
@@ -527,15 +537,20 @@ export class Particulas implements InterfaceLibrary{
         object.numeroParticula = particula;
         //Pasamos el metodo draw() el archivo JSON que contiene la informacion de la particula aislada
         object.draw(this.json,canvas2);
-        
-        //Agregamos el nuevo visualizador al nevagdor
-        //$('#myCanvas' ).before(nuevoItem); 
-        //$('#particula'+particula).before(canvas2);
+        //Agregamos el nuevo visualizador al nevegador
         $('.div-canvas').after(nuevoItem);
         $('#particula'+particula).after(canvas2);
-
-        $('#aislaParticulavisualizador1').remove();//Quitamos los elementos que no deben estar en menus hijos visualizador1
-        $('#Resultadovisualizador1').remove();
+        this.mostrarMenuIndividual(particula, object);
+        
+        //##########################PARA USAR EL MENU PRINCIPAL#############################
+        /*var nuevoID = new Date();
+        object.idVisualizador = nuevoID.getTime();
+        object.mostrarMenu(object.idVisualizador, 'div-canvas');
+        $('.div-canvas').after(nuevoItem);//SI FUNCIONA
+        $('#particula'+particula).after(canvas2);//SI FUNCIONA
+        $('#aislaParticula'+object.idVisualizador).remove();//Quitamos los elementos que no deben estar en menus hijos visualizador1//SI FUNCIONA
+        $('#Resultado'+object.idVisualizador).remove();//SI FUNCIONA*/
+        //##########################FIN PARA USAR EL MENU PRINCIPAL#############################
 
         //Con ayuda de Jquery capturamos el evento cuando el usuario desee elminar el visualizador del navegador
         $('#quitar'+ particula ).click(function():any{
@@ -544,13 +559,92 @@ export class Particulas implements InterfaceLibrary{
                 object = {};
                 $('#particula'+ particula ).remove();
                 $('#canvas'+particula).remove();
+                $('#visualizador'+particula).remove();//descomentar si se usa mostrarMenuIndividual
+                //$('#visualizador'+object.idVisualizador).remove();//para usar el menu principal*/
             } else {//Si el usuario cancela sólo retornamos false
                 return false;
             }
         });
     }//FIN aislarParticula*/
-     
-    //##########################################################################
+
+    mostrarMenuIndividual(numParticula:any, object:any){
+        var mySelf = this;
+        var contenedor= "<div class='row' id='visualizador" + numParticula + "'>" +
+                            "<div class='container col-sm-10' id='visualizador" + numParticula + "'></div> " +
+                            "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu" + numParticula + "'></div>" +
+                        "</div>";
+        
+        $("#particula"+numParticula).after(contenedor);
+
+        var item = 
+            "<div id = 'particulasMenu" + numParticula + "'"+ "class='particulasMenu' >" +
+                "<h3 class='align-text-top' id='titulo"+numParticula+"'><span>Menu Particula "+numParticula+"</span></h3>"+
+                "<ul class='nav flex-column'>" +
+                    "<li class='nav-item'>" +
+                        "<div class='form-check'>" +
+                            "<button  type='button' class='btn  btn-success button-espacio ' id='regresar" + numParticula + "'> << </button>"+
+                            "<button  type='button' class='btn btn-success button-espacio ' id = 'pausa" + numParticula + "'> || </button>"+
+                            "<button  type='button' class='btn btn-success button-espacio'  id='avanzar" + numParticula + "'> >> </button>"+
+                            "<div class='form-check'>" +
+                                "<input type='checkbox' class='form-check-input' id='Checkpt1" + object.idVisualizador + "'>" +
+                                "<label class='form-check-label' for='exampleCheck1'> Ver Trayectorias</label>" +
+                            "</div>" +
+                        "</div>" +
+                    "</li>" +
+                "</ul>" + 
+            "</div>";
+        //Agregamos el menu
+        $("#menu"+ numParticula).append(item);
+        $("#menu"+ numParticula).css({ "visibility": "visible", "width": "250" });
+        /************************************************************************************************ */
+        var check = document.getElementById('Checkpt1'+ object.idVisualizador);
+        //Metodos para interactuar con el menu
+        function pause(){
+            if (object.play == true) {
+                object.play = false;
+            } else {
+                object.play = true;
+            }
+        }
+
+        //regresa 5 pasos
+        function regresar(){
+            object.play = false;
+            object.paso -= 5;
+            object.setPos(object.aislar, object.mySelf);
+            object.renderer.render(object.scene, object.camera);
+        }
+
+        //avanza 5 pasos
+        function avanzar(){
+            object.play = false;
+            object.paso += 5;
+            object.setPos(object.aislar, object.mySelf);
+            object.renderer.render(object.scene, object.camera);
+        }
+        //EvenListeners: Se usa Jquery para capturar los eventos
+        $('document').ready(
+            $('#pausa' + numParticula).click(function(){
+                pause();
+            }),
+
+            $('#regresar' + numParticula).click(function () {
+                regresar();
+            }),
+
+            $('#avanzar' + numParticula).click(function () {
+                avanzar();
+            }),
+            //Si el checkbox esta marcado muestra las trayectorias
+            $('#Checkpt1'+object.idVisualizador).change(function(){
+                console.log("Entre a muestraTray individual "+object.aislar)
+                if($(mySelf).is(":checked")){
+                    mySelf.muestraTray(check, object.aislar);
+                }
+            })
+        );
+    }
+    
     texttoFunction(funcion: any) {
         return Parser.parse(funcion).toJSFunction(['x']);
     }

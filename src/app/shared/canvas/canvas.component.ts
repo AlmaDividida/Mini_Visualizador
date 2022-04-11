@@ -14,7 +14,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./canvas.component.css']
 })
 export class CanvasComponent implements OnInit {
-
+  idVisualizador = new Date();
   @ViewChild('myCanvas')
   private canvasRef!: ElementRef;
   private archivo!: object;
@@ -30,6 +30,7 @@ export class CanvasComponent implements OnInit {
   public load( json: any ) {
     const object = this.getConstructor(json);
     object.draw(json, this.canvas);
+    object.mostrarMenu(this.idVisualizador.getTime());//se manda a llamar al metodo para mostrar el menu
   }
 
   ngOnInit(): void {
