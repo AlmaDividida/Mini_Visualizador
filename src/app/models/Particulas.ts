@@ -410,8 +410,13 @@ export class Particulas implements InterfaceLibrary{
                             "<label >Looping Time: </label>"+  
                             "<input type='text' id='LoopingTime'  readonly size='5' value='"+Loop+"'><br>"+
                             "<div class='btn-grafica'>" +
-                                "<button  type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModalCenter' id='btngrafica" +mySelf.idVisualizador+ "'> Generar grafica </button>" 
-                            + "</div>"+
+                                /*"<button  type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModalCenter' id='btngrafica" +mySelf.idVisualizador+ "'>"+
+                                    "Generar grafica" +
+                                "</button>" +*/
+                                "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' id='btngrafica" +mySelf.idVisualizador+ "'>"+
+                                    "Launch demo modal"+
+                                "</button>"+
+                            "</div>"+
                         "</div>"+
                     "</li>" +
                 "</ul>" + 
@@ -456,7 +461,32 @@ export class Particulas implements InterfaceLibrary{
             //Envento click para el boton que genera la grafica
             $('#btngrafica' + mySelf.idVisualizador).click(function(){
                 //Variable que guarda la estructura del modal encargado de mostrar la grafica de la particula
-                var modal = "<div class='modal fade ' id='exampleModalCenter' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>" +
+                var modalPrueba =/*<!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                Launch demo modal
+                            </button>*/
+                            //<!-- Modal -->
+                            '<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                                '<div class="modal-dialog" role="document">'+
+                                    '<div class="modal-content">'+
+                                        '<div class="modal-header">'+
+                                            '<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>'+
+                                            '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                                                '<span aria-hidden="true">&times;</span>'+
+                                            '</button>'+
+                                        '</div>'+
+                                        '<div class="modal-body">'+
+                                            '...'+
+                                        '</div>'+
+                                        '<div class="modal-footer">'+
+                                            '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'+
+                                            '<button type="button" class="btn btn-primary">Save changes</button>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>';
+
+                /*var modal = "<div class='modal fade ' id='exampleModalCenter' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>" +
                                 "<div class='modal-dialog modal-lg' role='document'>"+
                                     "<div class='modal-content'>"+
                                         "<div class='modal-header'>"+
@@ -489,9 +519,10 @@ export class Particulas implements InterfaceLibrary{
                                         "</div>"+
                                     "</div>"+
                                 "</div>"+
-                            "</div>";
+                            "</div>";*/
                 //Agregamos al DOM el modal
-                $('.div-canvas').append(modal);
+                //$('.div-canvas').append(modal);
+                $('.div-canvas').append(modalPrueba);
             }),
         );
     }//Fin funcion mostrar menu
