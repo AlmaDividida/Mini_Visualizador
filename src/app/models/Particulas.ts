@@ -461,12 +461,8 @@ export class Particulas implements InterfaceLibrary{
             //Envento click para el boton que genera la grafica
             $('#btngrafica' + mySelf.idVisualizador).click(function(){
                 //Variable que guarda la estructura del modal encargado de mostrar la grafica de la particula
-                var modalPrueba =/*<!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                Launch demo modal
-                            </button>*/
-                            //<!-- Modal -->
-                            '<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                var modalPrueba =
+                            '<div class="modal h-100 d-flex flex-column justify-content-center" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: block">'+
                                 '<div class="modal-dialog" role="document">'+
                                     '<div class="modal-content">'+
                                         '<div class="modal-header">'+
