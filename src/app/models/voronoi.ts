@@ -67,7 +67,7 @@ export class Voronoi implements InterfaceLibrary{
             });
             this.colors = {};
         }
-    }
+    } // FIN setColor(checkbox:any, r:any, g:any, b:any)
 
     // Dibujar los puntos dados en el JSON
     draw(json: any, c: any): void {
@@ -120,7 +120,7 @@ export class Voronoi implements InterfaceLibrary{
             if (py > my) my = py;
             if (pz > mz) mz = pz;
 
-        });
+        }); // FIN puntos.forEach()
 
         // Esto debe cambiar debido al cambio a BufferGeometry
         cs.forEach((csColor) => {
@@ -150,7 +150,7 @@ export class Voronoi implements InterfaceLibrary{
             // Creamos todos los puntos y los agregamos a la escena
             var points = new THREE.Points( geometry, material );
             scene.add(points);
-        });
+        }); // FIN cs.forEach()
 
         function resizeCanvasToDisplaySize() {
             const canvas = renderer.domElement;
@@ -183,6 +183,6 @@ export class Voronoi implements InterfaceLibrary{
         controls.maxDistance = 1000;
 
         animate();
-    }
+    } // Fin draw(json: any, c: any)
 
 }
