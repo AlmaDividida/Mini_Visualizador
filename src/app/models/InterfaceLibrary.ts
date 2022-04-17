@@ -1,6 +1,6 @@
 export interface InterfaceLibrary {
 
-    menu: string;
+    // menu: string;
     draw(json: object, c: any): void;
     
 }
