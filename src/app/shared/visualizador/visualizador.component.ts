@@ -9,7 +9,6 @@ import { ArchivoService } from 'src/app/services/archivo.service';
 export class VisualizadorComponent implements OnInit {
 
   file: any | null = null;
-  json: any;
   buttonDisabled: boolean = true;
   json: any | null = null;
 
