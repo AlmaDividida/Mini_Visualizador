@@ -1,3 +1,5 @@
+// BUG: Manda que no existe el material 'color', pero solo hace por unos
+// segundos, después deja de mandar warnings
 // Interface que implementan todos los modelos
 import { InterfaceLibrary } from "./InterfaceLibrary";
 
@@ -216,6 +218,7 @@ export class Voronoi implements InterfaceLibrary{
                 var check:any = document.getElementById('checkAzul');
                 if(check.checked) {
                     $('#checkGris').prop("checked",false);
+                    mySelf.setColor(!check,0,0,0); // Esto funciona por alguna razón 
                     mySelf.setBlue(0,0,1);
                 }else{
                     mySelf.setColor(check,0,0,0);
@@ -226,6 +229,7 @@ export class Voronoi implements InterfaceLibrary{
                 var check:any = document.getElementById('checkGris');
                 if(check.checked) {
                     $('#checkAzul').prop("checked",false);
+                    mySelf.setColor(!check,0,0,0); // Esto funciona por alguna razón
                     mySelf.setGris(1,1,1);
                 }else{
                     mySelf.setColor(check,0,0,0);
@@ -256,11 +260,11 @@ export class Voronoi implements InterfaceLibrary{
         if (checkbox.checked == true) {     
             mySelf.puntosRed.forEach(function (punto:any) {
                 coloraux = punto.material.color;
-                console.log(coloraux);//########################
+                // console.log(coloraux);//########################
                 coloraux2 = coloraux.getHex();
-                console.log(coloraux2);//########################
+                // console.log(coloraux2);//########################
                 caux = coloraux.r + coloraux.g + coloraux.b;
-                console.log(caux);//########################
+                // console.log(caux);//########################
                 coloraux.r = r / caux;
                 coloraux.g = g / caux;
                 coloraux.b = b / caux;
@@ -304,3 +308,6 @@ export class Voronoi implements InterfaceLibrary{
         }
     }
 }
+
+// BUG: Cuando pasas de Azul a Gris sin desactivar el anterior los colores se
+// acumulan.
