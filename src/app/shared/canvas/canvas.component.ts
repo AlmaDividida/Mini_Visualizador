@@ -3,16 +3,10 @@ import { ThreeJs } from 'src/app/models/three-js';
 import { ChartJs } from 'src/app/models/chart-js';
 import { CanvasJs } from 'src/app/models/canvas-js';
 import { ArchivoService } from 'src/app/services/archivo.service';
-<<<<<<< HEAD
-import { RedPorosa } from 'src/app/models/red-porosa';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { Voronoi } from 'src/app/models/voronoi';
-=======
 import { Voronoi } from 'src/app/models/Voronoi';
 import { Particulas } from 'src/app/models/Particulas';
 import { RedPorosa } from 'src/app/models/RedPorosa';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
->>>>>>> origin/Angel
 
 @Component({
   selector: 'app-canvas',

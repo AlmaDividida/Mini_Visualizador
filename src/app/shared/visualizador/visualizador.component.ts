@@ -34,21 +34,11 @@ export class VisualizadorComponent implements OnInit {
   
   // OnClick del boton "Subir Archivo" 
   onLoad(): void {
-<<<<<<< HEAD
-    console.log(this.json);
-      this.archivoService.setArchivoJson( this.json );
-
-  }
-
-  // Guarda el json en el Local Storage
-  saveStorage(callback: any): void {
-=======
       this.archivoService.setArchivoJson( this.json );
   }
 
   // Guarda el json en el Local Storage
   saveStorage(callback:any): void {
->>>>>>> origin/Angel
     var fileToLoad = this.file;
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent){

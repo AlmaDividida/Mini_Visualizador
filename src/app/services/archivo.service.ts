@@ -17,10 +17,7 @@ export class ArchivoService {
    * setArchivoJson
    */
   public setArchivoJson(value: any) {
-<<<<<<< HEAD
-=======
     //var json = JSON.parse(value);
->>>>>>> origin/Angel
     this.archivoJson = value;
     this.archivoJson$.next(this.archivoJson);
   }
