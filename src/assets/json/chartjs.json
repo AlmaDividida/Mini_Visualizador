@@ -1,0 +1,31 @@
+{   
+    "name":"ChartJs",   
+    "metadata": {
+        "type": "chartjs",
+        "version": 1.0
+    },
+    "type": "bar",
+    "data": {
+        "labels": [
+            "Italy",
+            "France",
+            "Spain",
+            "USA",
+            "Argentina"
+        ],
+        "backgroundColor": [
+            "rgba(255,0,0,1.0)",
+            "rgba(255,0,0,0.8)",                    
+            "rgba(255,0,0,0.6)",
+            "rgba(255,0,0,0.4)",
+            "rgba(255,0,0,0.2)"
+        ],
+        "data": [
+            55,
+            49,
+            44,
+            24,
+            15
+        ]
+    }
+}

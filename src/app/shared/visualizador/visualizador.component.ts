@@ -11,6 +11,7 @@ export class VisualizadorComponent implements OnInit {
   file: any | null = null;
   json: any;
   buttonDisabled: boolean = true;
+  json: any | null = null;
 
   // Inject service 
   constructor(private archivoService:ArchivoService){}
@@ -33,6 +34,7 @@ export class VisualizadorComponent implements OnInit {
   
   // OnClick del boton "Subir Archivo" 
   onLoad(): void {
+<<<<<<< HEAD
     console.log(this.json);
       this.archivoService.setArchivoJson( this.json );
 
@@ -40,6 +42,13 @@ export class VisualizadorComponent implements OnInit {
 
   // Guarda el json en el Local Storage
   saveStorage(callback: any): void {
+=======
+      this.archivoService.setArchivoJson( this.json );
+  }
+
+  // Guarda el json en el Local Storage
+  saveStorage(callback:any): void {
+>>>>>>> origin/Angel
     var fileToLoad = this.file;
     var fileReader = new FileReader();
     fileReader.onload = function(fileLoadedEvent){
@@ -49,4 +58,5 @@ export class VisualizadorComponent implements OnInit {
     };
     fileReader.readAsText(fileToLoad, "UTF-8");
   }
+
 }

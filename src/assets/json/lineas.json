@@ -1,0 +1,25 @@
+{   
+    "name":"ChartJs",   
+    "metadata": {
+        "type": "chartjs",
+        "version": 1.0
+    },
+    "type": "line",
+    "data": {
+        "labels": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril"
+        ],
+        "backgroundColor": [
+            "rgba(54, 162, 235, 0.2)"
+        ],
+        "data": [
+            5000,
+            1500,
+            8000,
+            5102
+        ]
+    }
+}
