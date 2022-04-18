@@ -1,0 +1,58 @@
+<ng-template #contenido let-modal tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-header">
+        <h4 class="modal-title">Datos Estadísticos</h4>
+        <button class="close" aria-label="close" type="button" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div style="display: block">
+            
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li id="bt-char1" class="nav-item"> 
+                    <a class="nav-link active" data-target="#chart-1" data-toggle="tab" (click)="cambiaGrafica()">Histograma de Tiempos</a>
+                </li>
+                <li id="bt-char2" class="nav-item">
+                    <a class="nav-link" data-target="#chart-2" data-toggle="tab" (click)="cambiaGrafica()">Histograma de Golpes</a>
+                </li>
+                <li id="bt-char3" class="nav-item">
+                    <a class="nav-link" data-target="#chart-3" data-toggle="tab" (click)="cambiaGrafica()">Porcentaje de Golpes</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="chart-1">
+                    <div class="myChart1" style="height: 300px; width: 100%;">
+                        <canvas baseChart
+                                [data]="barChartDataTiempos"
+                                [type]="barChartTypeTiempos"
+                                [plugins]="barChartPlugins"
+                                [options]="barChartOptions">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="tab-pane" id="chart-2">
+                    <div class="myChart2" style="height: 300px; width: 100%;">
+                        <canvas baseChart
+                                [data]="barChartDataGolpes"
+                                [type]="barChartTypeGolpes"
+                                [plugins]="barChartPlugins"
+                                [options]="barChartOptions">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="tab-pane" id="chart-3">
+                    <div class="myChart3" style="height: 300px; width: 100%;">
+                        <canvas baseChart
+                                [data]="pieChartData"
+                                [type]="pieChartType"
+                                [plugins]="pieChartPlugins"
+                                [options]="pieChartOptions">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<button type="button" class="btn btn-success" (click)="modal.open(contenido,{size:'md'})" style="width: 100%;">ver gráfica</button>

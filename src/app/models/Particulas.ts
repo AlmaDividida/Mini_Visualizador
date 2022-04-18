@@ -1,5 +1,4 @@
 import { InterfaceLibrary } from "./InterfaceLibrary";
-import Chart from 'chart.js/auto'
 import * as THREE from 'three';
 
 declare var Parser:any;
@@ -8,7 +7,7 @@ declare var $:any;
 export class Particulas implements InterfaceLibrary{
     
     constructor(public json:any, public canvas:any){}
-    private chart: any;//Se usara para crear las graficas
+
     // Variables que seran usadas para la creación de las particulas
     mySelf = this;
     paso: any = 1;
@@ -206,8 +205,6 @@ export class Particulas implements InterfaceLibrary{
             objParticulas.animate(objParticulas.scene, objParticulas);
         }//FIN dibujaParticulas();
         dibujaParticulas();
-        /*var nuevoId = new Date();
-        this.mostrarMenu(nuevoId.getTime());*/
     }//FIN draw(json,canvas);
     
     /** Funcion animate **/
@@ -390,7 +387,7 @@ export class Particulas implements InterfaceLibrary{
                                 "<label class='form-check-label' for='exampleCheck1'> Ver Trayectorias</label>" +
                             "</div>" +
                         "</div>" +
-                    "</li>" +
+                    "</li><br>" +
 
                     "<li class='nav-item'>" +
                         "<div class='aisla-particula' id='aislaParticula" +mySelf.idVisualizador+ "'>"+
@@ -398,7 +395,7 @@ export class Particulas implements InterfaceLibrary{
                             "<input type='number' min='0' max='4'  size='4' id='particula' placeholder='Elija particula'>" +
                             "<button class = 'btn-success' type='submit' id='aceptar'>Aceptar</button>" +
                         "</div>" +
-                    "</li>" +
+                    "</li><br>" +
         
                     "<li class='nav-item'  id='Resultado" +mySelf.idVisualizador+ "'>" +
                         "<div class='result'>"+ 
@@ -413,15 +410,12 @@ export class Particulas implements InterfaceLibrary{
                                 /*"<button  type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModalCenter' id='btngrafica" +mySelf.idVisualizador+ "'>"+
                                     "Generar grafica" +
                                 "</button>" +*/
-                                "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' id='btngrafica" +mySelf.idVisualizador+ "'>"+
-                                    "Launch demo modal"+
-                                "</button>"+
                             "</div>"+
                         "</div>"+
                     "</li>" +
                 "</ul>" + 
             "</div>";
-        //boton            
+        //boton
         $("#menu" + mySelf.idVisualizador).append(item);
         $("#menu" + mySelf.idVisualizador).css({ "visibility": "visible", "height": "600px", "width": "250" })
         /************************************************************************************************ */
@@ -461,66 +455,103 @@ export class Particulas implements InterfaceLibrary{
             //Envento click para el boton que genera la grafica
             $('#btngrafica' + mySelf.idVisualizador).click(function(){
                 //Variable que guarda la estructura del modal encargado de mostrar la grafica de la particula
-                var modalPrueba =
-                            '<div class="modal h-100 d-flex flex-column justify-content-center" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: block">'+
-                                '<div class="modal-dialog" role="document">'+
-                                    '<div class="modal-content">'+
-                                        '<div class="modal-header">'+
-                                            '<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>'+
-                                            '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
-                                                '<span aria-hidden="true">&times;</span>'+
-                                            '</button>'+
+                var modalPrueba =   '<div class="modal h-100 d-flex flex-column justify-content-center" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: block">'+
+                                        '<div class="modal-dialog modal-lg" role="document">'+
+                                            '<div class="modal-content">'+
+                                                '<div class="modal-header">'+
+                                                    '<h5 class="modal-title" id="exampleModalLabel">Datos estadisticos</h5>'+
+                                                    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
+                                                        '<span aria-hidden="true">&times;</span>'+
+                                                    '</button>'+
+                                                '</div>'+
+                                                '<div class="modal-body">'+
+                                                    '<div style="display: block">'+
+                                                        '<ul class="nav nav-tabs" id="myTab" role="tablist">'+
+                                                            '<li id="bt-char1" class="nav-item"> '+
+                                                                '<a class="nav-link active" data-target="#chart-1" data-toggle="tab" (click)="' +cambiaGrafica()+ '">Histograma de Tiempos</a>'+
+                                                            '</li>'+
+                                                            '<li id="bt-char2" class="nav-item">'+
+                                                                '<a class="nav-link" data-target="#chart-2" data-toggle="tab" (click)="' +cambiaGrafica()+ '">Histograma de Golpes</a>'+
+                                                            '</li>'+
+                                                            '<li id="bt-char3" class="nav-item">'+
+                                                                '<a class="nav-link" data-target="#chart-3" data-toggle="tab" (click)="' +cambiaGrafica()+ '">Porcentaje de Golpes</a>'+
+                                                            '</li>'+
+                                                        '</ul>'+
+                                                        '<div class="tab-content">'+
+                                                            '<div class="tab-pane active" id="chart-1">'+
+                                                                '<div class="myChart1" style="height: 300px; width: 100%;">'+
+                                                                    '<canvas baseChart'+
+                                                                            '[data]="mySelf.barChartDataTiempos"'+
+                                                                            '[options]="mySelf.barChartOptionsTiempos"'+
+                                                                            '[plugins]="mySelf.barChartPlugins"'+
+                                                                            '[type]="mySelf.barChartTypeTiempos"'+
+                                                                            '(chartHover)="mySelf.chartHovered($event)"'+'>'+
+                                                                    '</canvas>'+
+                                                                '</div>'+
+                                                            '</div>'+
+                                                            '<div class="tab-pane" id="chart-2">'+
+                                                                '<div class="myChart2" style="height: 300px; width: 100%;">'+
+                                                                    '<canvas baseChart'+
+                                                                            '[data]="barChartDataGolpes"'+
+                                                                            '[options]="barChartOptionsGolpes"'+
+                                                                            '[plugins]="barChartPluginsGolpes"'+
+                                                                            '[type]="barChartTypeGolpes"'+'>'+
+                                                                    '</canvas>'+
+                                                                '</div>'+
+                                                            '</div>'+
+                                                            '<div class="tab-pane" id="chart-3">'+
+                                                                '<div class="myChart3" style="height: 300px; width: 100%;">'+
+                                                                    '<canvas baseChart'+
+                                                                            '[data]="pieChartData"'+
+                                                                            '[type]="pieChartType"'+
+                                                                            '[options]="pieChartOptions"'+
+                                                                            '[plugins]="pieChartPlugins" style="height: 300px; width: 100%;">'+
+                                                                    '</canvas>'+
+                                                                '</div>'+
+                                                            '</div>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                            '</div>'+
                                         '</div>'+
-                                        '<div class="modal-body">'+
-                                            '...'+
-                                        '</div>'+
-                                        '<div class="modal-footer">'+
-                                            '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'+
-                                            '<button type="button" class="btn btn-primary">Save changes</button>'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>';
-
-                /*var modal = "<div class='modal fade ' id='exampleModalCenter' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>" +
-                                "<div class='modal-dialog modal-lg' role='document'>"+
-                                    "<div class='modal-content'>"+
-                                        "<div class='modal-header'>"+
-                                            "<h5 class='modal-title' id='exampleModalLongTitle'>Datos Estadísticos</h5>"+
-                                            "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>"+
-                                                "<span aria-hidden='true'>&times;</span>"+
-                                            "</button>"+
-                                        "</div>"+
-                                        "<div class='modal-body'>"+
-                                            "<div role='tabpanel'>"+
-                                                "<!-- Nav tabs -->"+
-                                                "<ul class='nav nav-tabs' id='myTab' role='tablist'>"+
-                                                    "<li id='bt-char1' class='nav-item'> <a class='nav-link active' data-target='#chart-1' data-toggle='tab'>Histograma de Tiempos</a></li>"+
-                                                    "<li id='bt-char2' class='nav-item'> <a class='nav-link' data-target='#chart-2' data-toggle='tab'>Histograma de Golpes</a></li>"+
-                                                    "<li id='bt-char3' class='nav-item'> <a  class='nav-link' data-target='#chart-3' data-toggle='tab'>Porcentaje de Golpes</a></li>"+
-                                                "</ul>"+
-                                                "<!-- Tab panes -->"+
-                                                "<div class='tab-content'>"+
-                                                    "<div class='tab-pane active' id='chart-1'>"+
-                                                        "<div id='myChart1"+mySelf.idVisualizador+"' style='height: 300px; width: 100%;'></div>"+
-                                                    "</div>"+
-                                                    "<div class='tab-pane' id='chart-2'>"+
-                                                        "<div id='myChart2"+mySelf.idVisualizador+"' style=' height: 300px; width: 100%;'></div>"+
-                                                    "</div>"+
-                                                    "<div class='tab-pane' id='chart-3'>"+
-                                                        "<div id='myChart3"+mySelf.idVisualizador+"' style=' height: 300px; width: 100%;'></div>"+
-                                                    "</div>"+
-                                                "</div>"+
-                                            "</div>"+
-                                        "</div>"+
-                                    "</div>"+
-                                "</div>"+
-                            "</div>";*/
-                //Agregamos al DOM el modal
-                //$('.div-canvas').append(modal);
-                $('.div-canvas').append(modalPrueba);
+                                    '</div>';
+                
+                $(".div-canvas").after(modalPrueba);
+                console.log("Fui presionado: ");
             }),
         );
+
+        function cambiaGrafica(): void {
+            $("document").ready(
+            $('#bt-char1').on("shown.bs.tab",function() {
+                //activamos la grafica
+                $('#chart-1').addClass('active');
+                //Eliminamos las demas
+                $('#chart-2').removeClass('active');
+                $('#chart-3').removeClass('active');
+                console.log("BT-CHART1");
+            }),
+            $('#bt-char2').on("shown.bs.tab", function() {
+                console.log("voy a cambiar de grafica 2")
+                $('#chart-2').addClass('active');
+                //Eliminamos las demas
+                $('#chart-1').removeClass('active');
+                $('#chart-3').removeClass('active');
+                console.log("BT-CHART1");
+            }),
+            $('#bt-char3').on("shown.bs.tab", function() {
+                console.log("voy a cambiar de grafica 3")
+                $('#chart-3').addClass('active');
+                //Eliminamos las demas
+                $('#chart-2').removeClass('active');
+                $('#chart-1').removeClass('active');
+                $('.modal-body').css('overflow-y', 'auto');
+                $('.modal-body').css('max-height', $(window).height() * 0.7);
+                $('.modal-body').css('height', $(window).height() * 0.7);
+                console.log("BT-CHART1");
+            }),
+            );
+        }
     }//Fin funcion mostrar menu
 
     /**
@@ -528,10 +559,10 @@ export class Particulas implements InterfaceLibrary{
      * la particula se aisla
      */
     aislaParticula(particula:any):any{
-        var mySelf = this;
+        
         //Si la particula no existe en el arreglo
         if( particula >= this.particulas.length ){
-            //Mensaje de error
+            //Mensaje de error al ingresar un numero no valido
             const mensaje = "<div id = 'mensaje'>"+
                                 "<h3>Valor inválido</h3>"
                             "</div>";
@@ -547,8 +578,7 @@ export class Particulas implements InterfaceLibrary{
         //Se crea el menu de la particula
         var nuevoItem = "<div class='nuevo' id ='particula"+ particula +"'>"+
                             "<div class='row'>"+
-                                "<button class='btn btn-block btn-info btn-titulo col-sm-8' disabled>Particula " + particula + "</button>" +
-                                "<button class='btn btn-danger btn-titulo col-sm-4' id='quitar"+ particula +"'> Quitar </button>" +
+                                "<button class='btn btn-block btn-info btn-titulo' disabled style='width: 100%;'>Particula " + particula + "</button>" +
                             "</div>"           
                         "</div>";       
         //Creamos las variebles para el nuevo canvas
@@ -597,7 +627,7 @@ export class Particulas implements InterfaceLibrary{
     mostrarMenuIndividual(numParticula:any, object:any){
         var mySelf = this;
         var contenedor= "<div class='row' id='visualizador" + numParticula + "'>" +
-                            "<div class='container col-sm-10' id='visualizador" + numParticula + "'></div> " +
+                            //"<div class='container col-sm-10' id='visualizador" + numParticula + "'></div> " +
                             "<div class='d-none d-md-block bg-light sidebar col-sm-2' id='menu" + numParticula + "'></div>" +
                         "</div>";
         
@@ -616,8 +646,11 @@ export class Particulas implements InterfaceLibrary{
                                 "<input type='checkbox' class='form-check-input' id='Checkpt1" + object.idVisualizador + "'>" +
                                 "<label class='form-check-label' for='exampleCheck1'> Ver Trayectorias</label>" +
                             "</div>" +
+                            "<div>"+
+                                "<button class='btn btn-danger btn-titulo ' id='quitar"+ numParticula +"'> Quitar </button>" +
+                            "</div>"+
                         "</div>" +
-                    "</li>" +
+                    "</li><br>" +
                 "</ul>" + 
             "</div>";
         //Agregamos el menu

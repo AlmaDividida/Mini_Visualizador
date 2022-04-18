@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ArchivoService {
 
-  private archivoJson!: object;
+  public archivoJson!: object;
   private archivoJson$: Subject<object>;
 
   constructor() {

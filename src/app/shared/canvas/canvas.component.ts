@@ -14,6 +14,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   styleUrls: ['./canvas.component.css']
 })
 export class CanvasComponent implements OnInit {
+
+  muestraGrafica = false;
+
   idVisualizador = new Date();
   @ViewChild('myCanvas')
   private canvasRef!: ElementRef;
@@ -58,6 +61,7 @@ export class CanvasComponent implements OnInit {
         break;
       case "Particulas":
         object = new Particulas(json,this.canvas);
+        this.muestraGrafica = true;
         break;
       case "RedPorosa":
         object = new RedPorosa();

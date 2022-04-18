@@ -7,7 +7,9 @@ import { HeaderComponent } from './shared/header/header.component';
 import { VisualizadorComponent } from './shared/visualizador/visualizador.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { CanvasComponent } from './shared/canvas/canvas.component';
+import { ModalComponent } from './shared/modal/modal.component';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';//ng add @ng-bootstrap/ng-bootstrap 12.0.2
 import { NgChartsModule } from 'ng2-charts';//npm install ng2-charts --save 3.0.6
 
 @NgModule({
@@ -16,12 +18,14 @@ import { NgChartsModule } from 'ng2-charts';//npm install ng2-charts --save 3.0.
     HeaderComponent,
     VisualizadorComponent,
     FooterComponent,
-    CanvasComponent
+    CanvasComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgChartsModule
+    NgChartsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
